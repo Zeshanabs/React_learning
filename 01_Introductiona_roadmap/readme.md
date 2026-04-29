@@ -213,7 +213,7 @@ JavaScript fundamentals are critical
 Focus on:
 Problem solving
 Building projects
-Understanding concepts
+Understanding concepts                          
 ✅ Summary (Quick View)
 Learn JS first → then React
 React = UI library

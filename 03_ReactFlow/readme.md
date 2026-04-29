@@ -1,6 +1,4 @@
-Here is a **clean English translation + well-structured notes** from your video. I’ve organized everything so you can use it directly for study.
 
----
 
 # 📘 React Fundamentals – Notes (From Video)
 
