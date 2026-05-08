@@ -286,7 +286,7 @@ const deleteTodo = (id) => {
 
 ---
 
-## Explanation
+## Explanationm
 
 ### `filter()`
 
