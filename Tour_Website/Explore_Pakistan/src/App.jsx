@@ -1,121 +1,104 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+// ============================================================
+// FILE: src/App.jsx
+// PURPOSE: Root component — defines all routes using React Router v6
+// CONCEPTS USED: Routes, Route, useEffect (scroll to top on route change)
+// ============================================================
 
-function App() {
-  const [count, setCount] = useState(0)
+import { Routes, Route, useLocation } from 'react-router-dom'
+import { useEffect } from 'react'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import Home from './pages/Home'
+import About from './pages/About'
+import Service from './pages/Service'
+import Contact from './pages/Contact'
 
+/*
+  ScrollToTop: Custom component that scrolls window to top
+  whenever the URL (location.pathname) changes.
+  This mimics normal browser navigation behavior in SPAs.
+*/
+const ScrollToTop = () => {
+  const { pathname } = useLocation()  // useLocation: gives current URL info
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])  // runs every time the path changes
+  return null  // renders nothing visible
+}
+
+/*
+  App Component — the SHELL of the entire app.
+  
+  Structure:
+  ┌─────────────────────────┐
+  │ <Navbar />              │  ← always visible (fixed)
+  ├─────────────────────────┤
+  │ <Routes>                │  ← renders the matching page
+  │   /       → <Home />    │
+  │   /about  → <About />   │
+  │   /service→ <Service /> │
+  │   /contact→ <Contact /> │
+  └─────────────────────────┘
+  │ <Footer />              │  ← always visible
+  └─────────────────────────┘
+
+  REACT ROUTER v6 CONCEPTS:
+  - <Routes>: Container for all <Route> elements
+  - <Route path="/" element={<Home />}>: Maps URL "/" to <Home> component
+  - Only ONE route renders at a time (the one matching the URL)
+  - path="*": Catch-all for 404 pages
+*/
+
+const App = () => {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="min-h-screen bg-white font-poppins">
+      <ScrollToTop />
+      
+      {/* Navbar stays on top of every page */}
+      <Navbar />
 
-      <div className="ticks"></div>
+      {/*
+        Routes: Like a switch statement for URLs.
+        React Router checks the current URL and renders
+        the component whose path matches.
+      */}
+      <Routes>
+        {/* Home Page at root URL "/" */}
+        <Route path="/" element={<Home />} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {/* About Page at "/about" */}
+        <Route path="/about" element={<About />} />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+        {/* Services Page at "/service" */}
+        <Route path="/service" element={<Service />} />
+
+        {/* Contact Page at "/contact" */}
+        <Route path="/contact" element={<Contact />} />
+
+        {/* 404 - Not Found (catch-all) */}
+        <Route
+          path="*"
+          element={
+            <div className="flex flex-col items-center justify-center min-h-screen text-center font-poppins px-4">
+              <div className="text-8xl mb-6">🗺️</div>
+              <h1 className="text-6xl font-extrabold text-secondary mb-4">404</h1>
+              <p className="text-gray-500 text-xl mb-8">
+                Oops! This destination doesn't exist on our map.
+              </p>
+              <a
+                href="/"
+                className="bg-primary text-white font-bold px-10 py-3 rounded-full hover:bg-orange-500 transition-all duration-300"
+              >
+                Back to Home
+              </a>
+            </div>
+          }
+        />
+      </Routes>
+
+      {/* Footer stays at bottom of every page */}
+      <Footer />
+    </div>
   )
 }
 
